@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".DrawObjects">
 
 
     <LinearLayout
@@ -12,10 +12,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <SurfaceView
-            android:id="@+id/surfaceView"
+        <com.example.pirkl21cs301hw2.DrawObjects
+            android:id="@+id/drawSpace"
             android:layout_width="match_parent"
-            android:layout_height="900dp" />
+            android:background="@color/grey"
+            android:layout_height="870dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,7 +44,7 @@
             android:paddingTop="10dp">
 
             <TextView
-                android:id="@+id/redColor"
+                android:id="@+id/redText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -59,7 +60,7 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/greenColor"
+                android:id="@+id/greenText"
                 android:layout_width="5dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -76,7 +77,7 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/blueColor"
+                android:id="@+id/blueText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
