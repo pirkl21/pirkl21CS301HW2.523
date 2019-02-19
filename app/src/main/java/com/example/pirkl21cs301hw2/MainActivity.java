@@ -1,6 +1,5 @@
 package com.example.pirkl21cs301hw2;
 
-import android.graphics.Canvas;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -13,19 +12,15 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
 
 
-   private TextView drawingName = null; // Object Currently Selected.
-   SurfaceView drawingMade; // Makes Invalidate Use-able
-   DrawObjects drawingSelected; // Current Object Selected
-   private TextView redText = null;
-   private TextView blueText = null;
-   private TextView greenText = null;
-   private SeekBar redSeekBar = null;
-   private SeekBar blueSeekBar = null;
-   private SeekBar greenSeekBar = null;
-   // Integers that correspond to the progress value of the SeekBar
-   int redProgress;
-   int blueProgress;
-   int greenProgress;
+    private TextView drawingName = null; // Object Currently Selected.
+    SurfaceView drawingMade; // Makes Invalidate Use-able
+    DrawObjects drawingSelected; // Current Object Selected
+    private TextView redText = null;
+    private TextView blueText = null;
+    private TextView greenText = null;
+    private SeekBar redSeekBar = null;
+    private SeekBar blueSeekBar = null;
+    private SeekBar greenSeekBar = null;
 
 
     @Override
@@ -34,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initializeVariables();
+
 
     }
 
@@ -44,22 +40,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onProgressChanged(SeekBar seekBar, int currentProgress, boolean fromUser) {
 
-        if(blueSeekBar !=  null || redSeekBar != null || greenSeekBar != null) {
-            if (seekBar == blueSeekBar) {
-                blueText.setText("Blue: " + currentProgress);
-                blueProgress = currentProgress;
-            } else if (seekBar == redSeekBar) {
-                redText.setText("Red: " + currentProgress);
-                redProgress = currentProgress;
-            } else if (seekBar == greenSeekBar) {
-                greenProgress = currentProgress;
-                greenText.setText("Green: " + currentProgress);
-            }
-
+        /**External Citation
+         * Date: February 19, 2019
+         * Problem: Program kept crashing because drawingSelected did not
+         * exist on startup
+         * Resource: https://developer.android.com/reference/android/view/SurfaceView
+         * Solution: Used error checking to ensure that the drawingSelected would not
+         * be used if it was not initialized
+         */
+        if (seekBar == blueSeekBar) {
+            blueText.setText("Blue: " + currentProgress);
             if (drawingSelected != null) {
-                drawingSelected.setProgress(redProgress, blueProgress, greenProgress);
+                drawingSelected.setBlueProgress(currentProgress);
             }
         }
+        if (seekBar == redSeekBar) {
+            redText.setText("Red: " + currentProgress);
+            if (drawingSelected != null) {
+                drawingSelected.setRedProgress(currentProgress);
+            }
+        }
+        if (seekBar == greenSeekBar) {
+            greenText.setText("Green: " + currentProgress);
+            if (drawingSelected != null) {
+                drawingSelected.setGreenProgress(currentProgress);
+            }
+        }
+
+
     }
 
     @Override
@@ -70,7 +78,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onStopTrackingTouch(SeekBar seekBar) {
     }
 
-    public void initializeVariables(){
+    // Basic variable initialization and findViewById
+    // attaching to objects
+    public void initializeVariables() {
 
         // Set the Texts to a default value of "Color: 0"
         redText = findViewById(R.id.redText);
@@ -93,29 +103,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         greenSeekBar.setOnSeekBarChangeListener(this);
         greenSeekBar.setMax(255);
 
-        drawingSelected = new DrawObjects(this);
-
         drawingName = findViewById(R.id.objectDefinition);
         drawingMade = findViewById(R.id.drawSpace);
         drawingMade.setOnTouchListener(this);
 
+        drawingSelected = findViewById(R.id.drawSpace);
     }
 
 
+    /**
+     * Creates "hitboxes" for each object on the field
+     * and adjusts the TextView - drawingName - when one
+     * is selected
+     */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        int xLocation = (int)event.getX();
-        int yLocation = (int)event.getY();
+        int xLocation = (int) event.getX();
+        int yLocation = (int) event.getY();
 
 
-        if(xLocation >= 600.0f && xLocation <= 1010.0f && yLocation <= 1000.0f && yLocation >= 700.0f ) {
+        if (xLocation >= 600.0f && xLocation <= 1010.0f && yLocation <= 1000.0f && yLocation >= 700.0f) {
             drawingName.setText("Small Rectangle");
-        } else if(xLocation >= 300 && xLocation <= 800 && yLocation <= 600 && yLocation >= 100) {
+        } else if (xLocation >= 300 && xLocation <= 800 && yLocation <= 600 && yLocation >= 100) {
             drawingName.setText("Big Square");
-        } else if(xLocation >= 80 && xLocation <= 180 && yLocation <= 270 && yLocation >= 170) {
+        } else if (xLocation >= 80 && xLocation <= 180 && yLocation <= 270 && yLocation >= 170) {
             drawingName.setText("Small Circle");
-        } else if(xLocation >= 20 && xLocation <= 420 && yLocation <= 1200 && yLocation >= 800) {
+        } else if (xLocation >= 20 && xLocation <= 420 && yLocation <= 1200 && yLocation >= 800) {
             drawingName.setText("Large Circle");
         } else {
             drawingName.setText("Select Object");
@@ -125,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Send the text currently stored under the TextView Object to
         // The other class to be used for color change
         drawingSelected.sendText(drawingName.getText().toString());
+        // reload the SurfaceView and call onDraw again.
         drawingMade.invalidate();
         return true;
     }

@@ -38,10 +38,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:paddingTop="10dp"
             tools:layout_editor_absoluteX="768dp"
-            tools:layout_editor_absoluteY="40dp"
-            android:paddingTop="10dp">
+            tools:layout_editor_absoluteY="40dp">
 
             <TextView
                 android:id="@+id/redText"
@@ -92,6 +91,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:text="Click Off The Shape To See Your Color Changes!" />
+
 
     </LinearLayout>
 

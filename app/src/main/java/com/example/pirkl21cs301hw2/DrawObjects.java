@@ -7,19 +7,16 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 
 public class DrawObjects extends SurfaceView {
 
-    // Default value for the Alpha part of a color code.
-    static final int ALPHA = 255;
-    Canvas canvas1;
     // Objects to define the sizes of the "Rectangles"
-    private String objectSelected = "";
-    protected Rect bigSquare = new Rect(600, 700, 1010, 1000);
-    protected Rect smallRectangle = new Rect(300, 600, 800, 100);
+    private String objectSelected = ""; // Variable containing the name of the object selected
+
+    // Set object sizes so I don't have to type out their sizes every time I use them
+    protected Rect smallRectangle = new Rect(600, 700, 1010, 1000);
+    protected Rect bigSquare = new Rect(300, 600, 800, 100);
 
     // X position, Y position, Radius (Circle)
     private int[] smallCircle = {130, 220, 50};
@@ -57,8 +54,10 @@ public class DrawObjects extends SurfaceView {
     @Override
     protected void onDraw(Canvas canvas) {
         init();
-
-
+        // a if statement to check if the app is on first load-up. If so,
+        // Run the default initDrawing method which creates the shapes under a
+        // default shape. If the user sets all sliders to zero they can
+        // reset the colors of all the shapes.
         if (greenProgress < 1 && blueProgress < 1 && redProgress < 1) {
             initDrawing(canvas);
         } else {
@@ -66,6 +65,11 @@ public class DrawObjects extends SurfaceView {
         }
     }
 
+
+    // Init drawing will implement the color changes based on
+    // the object selected in the main activity then commit the changes to
+    // the instance variables. If no object is selected then the canvas
+    // will show all the shapes and their colors.
     public void initUpdateDrawing(Canvas canvas) {
         Paint greyStartPaint = new Paint();
         greyStartPaint.setColor(0xFF9B9B95);
@@ -73,21 +77,21 @@ public class DrawObjects extends SurfaceView {
         // If/Else Sequence to change the color
         // depending on the Object Selected.
         if (objectSelected.equals("Small Circle")) {
-            smallCircleColor.setARGB(ALPHA, redProgress, blueProgress, greenProgress);
+            smallCircleColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
             canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], smallCircleColor);
             canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
             canvas.drawRect(smallRectangle, greyStartPaint);
             canvas.drawRect(bigSquare, greyStartPaint);
 
         } else if (objectSelected.equals("Large Circle")) {
-            largeCircleColor.setARGB(ALPHA, redProgress, blueProgress, greenProgress);
+            largeCircleColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
             canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], greyStartPaint);
             canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], largeCircleColor);
             canvas.drawRect(smallRectangle, greyStartPaint);
             canvas.drawRect(bigSquare, greyStartPaint);
 
         } else if (objectSelected.equals("Small Rectangle")) {
-            smallRectangleColor.setARGB(ALPHA, redProgress, blueProgress, greenProgress);
+            smallRectangleColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
             canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], greyStartPaint);
             canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
             canvas.drawRect(smallRectangle, smallRectangleColor);
@@ -95,44 +99,67 @@ public class DrawObjects extends SurfaceView {
 
 
         } else if (objectSelected.equals("Big Square")) {
-            bigSquareColor.setARGB(ALPHA, redProgress, blueProgress, greenProgress);
+            bigSquareColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
             canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], greyStartPaint);
             canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
             canvas.drawRect(smallRectangle, greyStartPaint);
             canvas.drawRect(bigSquare, bigSquareColor);
+        } else {
+            initDrawing(canvas);
         }
     }
 
+    // initDrawing is the method that will show all color changes on the canvas
+    // based on values stored in the instance variables
     public void initDrawing(Canvas canvas) {
         Paint greyStartPaint = new Paint();
         canvas.drawColor(0xFFFFFFFF);
 
         greyStartPaint.setColor(0xFF9B9B95);
 
-        // Both circles don't have a specific object so I will have to use an array to store its data points
-        // This is so I can access their sizes globally throughout the app without making too many
-        // Individual variables.
-        canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], greyStartPaint);
-        canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
-        canvas.drawRect(bigSquare, greyStartPaint);
-        canvas.drawRect(smallRectangle, greyStartPaint);
+        // Check if the program is running for the first time, if so
+        // set the colors to the default grey, if not. set the values
+        // to the color stored in the instance variable.
+        if (redProgress < 1 && blueProgress < 1 && greenProgress < 1) {
+            this.smallCircleColor.setColor(greyStartPaint.getColor());
+            this.largeCircleColor.setColor(greyStartPaint.getColor());
+            this.bigSquareColor.setColor(greyStartPaint.getColor());
+            this.smallRectangleColor.setColor(greyStartPaint.getColor());
+        }
+        canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], smallCircleColor);
+        canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], largeCircleColor);
+        canvas.drawRect(bigSquare, bigSquareColor);
+        canvas.drawRect(smallRectangle, smallRectangleColor);
     }
 
     // Method to grab the most recent Shape selected
     public void sendText(String nameOfObject) {
-        objectSelected = nameOfObject;
+        this.objectSelected = nameOfObject;
     }
 
-    // Method to grab the integer values measured by the Progress of the
+    // Methods to grab the integer values measured by the Progress of the
     // Seek Bars
-    public void setProgress(int redProgressInfo, int greenProgressInfo, int blueProgressInfo) {
-        redProgress = redProgressInfo;
-        greenProgress = greenProgressInfo;
-        blueProgress = blueProgressInfo;
+
+    /**
+     * External Citation
+     * Date: February 19, 2019
+     * Problem: Getting the progress from the other class, I forgot
+     * that setters/getters where a thing so I had to google it.
+     * Resource:
+     * https://www.codejava.net/coding/java-getter-and-setter-tutorial-from-basics-to-best-practices
+     * Solution: Use a setter and getter to communicated changes in individual
+     * progress bars then transmit them through instance variables to the other class.
+     */
+    public void setGreenProgress(int greenProgress) {
+        this.greenProgress = greenProgress;
     }
 
-    public int getGreenProgress(int greenProgress){
+    public void setRedProgress(int redProgress) {
+        this.redProgress = redProgress;
+    }
 
+    public void setBlueProgress(int blueProgress) {
+        this.blueProgress = blueProgress;
     }
 
 }
