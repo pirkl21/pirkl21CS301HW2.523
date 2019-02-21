@@ -9,20 +9,35 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 
+/*
+ *
+ *
+ * @author Benjamin Daniel Pirkl
+ *
+ */
+
+/**
+ *  MainActivity is the name of the class that controls the LinearLayouts
+ *  and their components and then communicates them to the DrawObjects Class
+ * @author Benjamin Daniel Pirkl
+ *
+ *
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
 
 
     private TextView drawingName = null; // Object Currently Selected.
     SurfaceView drawingMade; // Makes Invalidate Use-able
     DrawObjects drawingSelected; // Current Object Selected
-    private TextView redText = null;
-    private TextView blueText = null;
-    private TextView greenText = null;
-    private SeekBar redSeekBar = null;
-    private SeekBar blueSeekBar = null;
-    private SeekBar greenSeekBar = null;
+    private TextView redText = null; // Red Text View
+    private TextView blueText = null; // Blue Text View
+    private TextView greenText = null; // Green Text View
+    private SeekBar redSeekBar = null; // Red Seek Bar
+    private SeekBar blueSeekBar = null; // Blue Seek Bar
+    private SeekBar greenSeekBar = null; // Green Seek Bar
 
 
+    // Method that runs when the app is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +50,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        /* Ignore */
     }
 
+    /** This method runs when the Seek Bars are incremented by a value.
+     *
+     * @param seekBar
+     * @param currentProgress
+     * @param fromUser
+     */
     @Override
     public void onProgressChanged(SeekBar seekBar, int currentProgress, boolean fromUser) {
 
@@ -131,6 +153,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             drawingName.setText("Small Circle");
         } else if (xLocation >= 20 && xLocation <= 420 && yLocation <= 1200 && yLocation >= 800) {
             drawingName.setText("Large Circle");
+        } else if (xLocation >= 800 && xLocation <= 1000 && yLocation <= 1250 && yLocation >= 1050){
+            drawingName.setText("Small Square");
+        } else if (xLocation >= 950 && xLocation <= 1150 && yLocation <= 500 && yLocation >= 300){
+            drawingName.setText("Medium Circle");
         } else {
             drawingName.setText("Select Object");
         }

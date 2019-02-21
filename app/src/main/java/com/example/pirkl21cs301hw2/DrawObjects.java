@@ -8,7 +8,13 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
-
+/**
+ *
+ * Draw Objects is a class that implements SurfaceView
+ * to draw the objects on the screen.
+ * @author Benjamin Daniel Pirkl
+ *
+ */
 public class DrawObjects extends SurfaceView {
 
     // Objects to define the sizes of the "Rectangles"
@@ -17,10 +23,12 @@ public class DrawObjects extends SurfaceView {
     // Set object sizes so I don't have to type out their sizes every time I use them
     protected Rect smallRectangle = new Rect(600, 700, 1010, 1000);
     protected Rect bigSquare = new Rect(300, 600, 800, 100);
+    protected Rect smallSquare = new Rect(800, 1250, 1000, 1050);
 
     // X position, Y position, Radius (Circle)
     private int[] smallCircle = {130, 220, 50};
     private int[] largeCircle = {220, 1000, 200};
+    private int[] mediumCircle = {1050, 400, 100};
     // Global Variables used to track the progress bar.
     private int greenProgress;
     private int redProgress;
@@ -30,7 +38,8 @@ public class DrawObjects extends SurfaceView {
     protected Paint largeCircleColor = new Paint();
     protected Paint smallRectangleColor = new Paint();
     protected Paint bigSquareColor = new Paint();
-
+    protected Paint smallSquareColor = new Paint();
+    protected Paint mediumCircleColor = new Paint();
     public DrawObjects(Context context) {
         super(context);
         init();
@@ -82,6 +91,8 @@ public class DrawObjects extends SurfaceView {
             canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
             canvas.drawRect(smallRectangle, greyStartPaint);
             canvas.drawRect(bigSquare, greyStartPaint);
+            canvas.drawRect(smallSquare, greyStartPaint);
+            canvas.drawCircle(mediumCircle[0], mediumCircle[1], mediumCircle[2], greyStartPaint);
 
         } else if (objectSelected.equals("Large Circle")) {
             largeCircleColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
@@ -89,21 +100,40 @@ public class DrawObjects extends SurfaceView {
             canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], largeCircleColor);
             canvas.drawRect(smallRectangle, greyStartPaint);
             canvas.drawRect(bigSquare, greyStartPaint);
-
+            canvas.drawRect(smallSquare, greyStartPaint);
+            canvas.drawCircle(mediumCircle[0], mediumCircle[1], mediumCircle[2], greyStartPaint);
         } else if (objectSelected.equals("Small Rectangle")) {
             smallRectangleColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
             canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], greyStartPaint);
             canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
             canvas.drawRect(smallRectangle, smallRectangleColor);
             canvas.drawRect(bigSquare, greyStartPaint);
-
-
+            canvas.drawRect(smallSquare, greyStartPaint);
+            canvas.drawCircle(mediumCircle[0], mediumCircle[1], mediumCircle[2], greyStartPaint);
         } else if (objectSelected.equals("Big Square")) {
             bigSquareColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
             canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], greyStartPaint);
             canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
             canvas.drawRect(smallRectangle, greyStartPaint);
             canvas.drawRect(bigSquare, bigSquareColor);
+            canvas.drawRect(smallSquare, greyStartPaint);
+            canvas.drawCircle(mediumCircle[0], mediumCircle[1], mediumCircle[2], greyStartPaint);
+        } else if(objectSelected.equals("Small Square")){
+            smallSquareColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
+            canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], greyStartPaint);
+            canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
+            canvas.drawRect(smallRectangle, greyStartPaint);
+            canvas.drawRect(bigSquare, greyStartPaint);
+            canvas.drawRect(smallSquare, smallSquareColor);
+            canvas.drawCircle(mediumCircle[0], mediumCircle[1], mediumCircle[2], greyStartPaint);
+        } else if(objectSelected.equals("Medium Circle")){
+            mediumCircleColor.setColor(Color.rgb(redProgress, greenProgress, blueProgress));
+            canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], greyStartPaint);
+            canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], greyStartPaint);
+            canvas.drawRect(smallRectangle, greyStartPaint);
+            canvas.drawRect(bigSquare, greyStartPaint);
+            canvas.drawRect(smallSquare, greyStartPaint);
+            canvas.drawCircle(mediumCircle[0], mediumCircle[1], mediumCircle[2], mediumCircleColor);
         } else {
             initDrawing(canvas);
         }
@@ -125,11 +155,15 @@ public class DrawObjects extends SurfaceView {
             this.largeCircleColor.setColor(greyStartPaint.getColor());
             this.bigSquareColor.setColor(greyStartPaint.getColor());
             this.smallRectangleColor.setColor(greyStartPaint.getColor());
+            this.smallSquareColor.setColor(greyStartPaint.getColor());
+            this.mediumCircleColor.setColor(greyStartPaint.getColor());
         }
         canvas.drawCircle(smallCircle[0], smallCircle[1], smallCircle[2], smallCircleColor);
         canvas.drawCircle(largeCircle[0], largeCircle[1], largeCircle[2], largeCircleColor);
         canvas.drawRect(bigSquare, bigSquareColor);
         canvas.drawRect(smallRectangle, smallRectangleColor);
+        canvas.drawRect(smallSquare, smallSquareColor);
+        canvas.drawCircle(mediumCircle[0], mediumCircle[1], mediumCircle[2], mediumCircleColor);
     }
 
     // Method to grab the most recent Shape selected
